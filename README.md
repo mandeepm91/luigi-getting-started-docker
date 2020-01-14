@@ -1,4 +1,9 @@
+### A demo of Luigi getting started example with dockerized setup
+
 I am using Luigi for the first time and was trying to set it up using docker. Taking help from https://github.com/axiom-data-science/docker-luigi and https://github.com/lucrussell/docker-luigi I managed to get the top_artists example working with dockerized setup of luigi.
+
+
+__Note:__
 
 The `docker-compose.yml` file has 3 services:
 
@@ -15,6 +20,14 @@ For example:
 ```
 export DATE_INTERVAL=2019-12
 
+```
+
+Then create the directories for volumes:
+
+```
+mkdir docker-volumes
+mkdir docker-volumes/data
+mkdir docker-volumes/luigistate
 ```
 
 Then bring up the docker setup by running:
