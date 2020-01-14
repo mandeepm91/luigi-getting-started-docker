@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  luigi:
+    image: axiom/docker-luigi:2.8.9
+    env_file:
+      - luigi.env
+    volumes:
+      - ./config/luigi.conf:/etc/luigi/luigi.conf
+      - ./config/logging.conf:/etc/luigi/logging.conf
+      - ./docker-volumes/luigistate:/luigi/state
+    ports:
+      - 8082:8082
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:11.2
+    env_file:
+      - postgres.env
+    volumes:
+      - ./docker-volumes/postgres:/var/lib/postgresql/data
+
+  demo:
+    build: .
+    restart: always
+    command: bash -c "sleep 10; python -m luigi --module top_artists Top10Artists --date-interval ${DATE_INTERVAL}"
+    env_file:
+      - demo.env
+    volumes:
+      - ./docker-volumes/data:/data
+      - ./config/demo.conf:/etc/luigi/luigi.conf
+      - ./config/logging.conf:/etc/luigi/logging.conf
+    depends_on:
+      - luigi
